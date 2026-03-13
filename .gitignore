@@ -1,0 +1,54 @@
+# Build results
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]uild/
+
+# Visual Studio files
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.rsuser
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# VS Code
+.vscode/
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# NuGet
+*.nupkg
+.nuget-packages/
+packages/
+
+# Debug
+*.pdb
+*.dll
+*.exe
+
+# Logs
+*.log
+
+# Appsettings (chỉ bỏ qua appsettings.Development.json, giữ lại appsettings.json để tránh lỗi)
+appsettings.Development.json

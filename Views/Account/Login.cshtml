@@ -1,3 +1,4 @@
+@model KarnelTravels.Models.LoginViewModel
 @{
     ViewData["Title"] = "Đăng nhập";
 }
@@ -9,18 +10,21 @@
                 <div class="card border-0 shadow">
                     <div class="card-body p-5">
                         <h2 class="text-center mb-4">Đăng nhập</h2>
-                        @if(ViewData["Error"] != null)
-                        {
-                            <div class="alert alert-danger">@ViewData["Error"]</div>
-                        }
                         <form method="post">
+                            <div asp-validation-summary="All" class="alert alert-danger"></div>
                             <div class="mb-3">
-                                <label class="form-label">Email</label>
-                                <input type="email" name="email" class="form-control" required>
+                                <label asp-for="Email" class="form-label"></label>
+                                <input asp-for="Email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Mật khẩu</label>
-                                <input type="password" name="password" class="form-control" required>
+                                <label asp-for="Password" class="form-label"></label>
+                                <input asp-for="Password" class="form-control" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                            <div class="mb-3 form-check">
+                                <input asp-for="RememberMe" class="form-check-input" />
+                                <label asp-for="RememberMe" class="form-check-label"></label>
                             </div>
                             <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
                         </form>
@@ -33,3 +37,7 @@
         </div>
     </div>
 </section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

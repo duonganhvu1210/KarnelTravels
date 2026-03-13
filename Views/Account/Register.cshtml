@@ -1,4 +1,4 @@
-@model KarnelTravels.Models.User
+@model KarnelTravels.Models.RegisterViewModel
 @{
     ViewData["Title"] = "Đăng ký";
 }
@@ -10,30 +10,32 @@
                 <div class="card border-0 shadow">
                     <div class="card-body p-5">
                         <h2 class="text-center mb-4">Đăng ký tài khoản</h2>
-                        @if(ViewData["Error"] != null)
-                        {
-                            <div class="alert alert-danger">@ViewData["Error"]</div>
-                        }
                         <form method="post">
+                            <div asp-validation-summary="All" class="alert alert-danger"></div>
                             <div class="mb-3">
-                                <label class="form-label">Họ và tên *</label>
-                                <input asp-for="FullName" class="form-control" required>
+                                <label asp-for="FullName" class="form-label"></label>
+                                <input asp-for="FullName" class="form-control" />
+                                <span asp-validation-for="FullName" class="text-danger"></span>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Email *</label>
-                                <input asp-for="Email" type="email" class="form-control" required>
+                                <label asp-for="Email" class="form-label"></label>
+                                <input asp-for="Email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Mật khẩu *</label>
-                                <input asp-for="PasswordHash" type="password" class="form-control" required>
+                                <label asp-for="Password" class="form-label"></label>
+                                <input asp-for="Password" class="form-control" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Điện thoại</label>
-                                <input asp-for="Phone" class="form-control">
+                                <label asp-for="ConfirmPassword" class="form-label"></label>
+                                <input asp-for="ConfirmPassword" class="form-control" />
+                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Địa chỉ</label>
-                                <input asp-for="Address" class="form-control">
+                                <label asp-for="Address" class="form-label"></label>
+                                <input asp-for="Address" class="form-control" />
+                                <span asp-validation-for="Address" class="text-danger"></span>
                             </div>
                             <button type="submit" class="btn btn-primary w-100">Đăng ký</button>
                         </form>
@@ -46,3 +48,7 @@
         </div>
     </div>
 </section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -7,9 +7,9 @@ using KarnelTravels.Models;
 
 public class TouristSpotController : Controller
 {
-    private readonly KarnelDbContext _context;
+    private readonly ApplicationDbContext _context;
 
-    public TouristSpotController(KarnelDbContext context)
+    public TouristSpotController(ApplicationDbContext context)
     {
         _context = context;
     }

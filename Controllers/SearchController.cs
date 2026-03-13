@@ -7,9 +7,9 @@ using KarnelTravels.Models;
 
 public class SearchController : Controller
 {
-    private readonly KarnelDbContext _context;
+    private readonly ApplicationDbContext _context;
 
-    public SearchController(KarnelDbContext context)
+    public SearchController(ApplicationDbContext context)
     {
         _context = context;
     }

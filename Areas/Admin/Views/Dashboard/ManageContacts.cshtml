@@ -1,0 +1,89 @@
+@model IEnumerable<KarnelTravels.Models.Contact>
+@{
+    ViewData["Title"] = "Quản lý liên hệ";
+    Layout = "_AdminLayout";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Danh sách liên hệ (F169)</h3>
+    </div>
+    <div class="card-body table-responsive p-0">
+        <table class="table table-hover text-nowrap">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Họ tên</th>
+                    <th>Email</th>
+                    <th>Tiêu đề</th>
+                    <th>Nội dung</th>
+                    <th>Ngày gửi</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var index = 1;
+                }
+                @foreach (var contact in Model)
+                {
+                    <tr class="@(!contact.IsRead ? "table-warning" : "")">
+                        <td>@index</td>
+                        <td>
+                            <strong>@contact.Name</strong><br>
+                            <small>@contact.Phone</small>
+                        </td>
+                        <td>@contact.Email</td>
+                        <td>@(contact.Title ?? "Không có tiêu đề")</td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal-@contact.ContactId">
+                                Xem nội dung
+                            </button>
+                            
+                            <div class="modal fade" id="modal-@contact.ContactId">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Nội dung liên hệ</h4>
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p><strong>Từ:</strong> @contact.Name (@contact.Email)</p>
+                                            <p><strong>Tiêu đề:</strong> @(contact.Title ?? "Không có tiêu đề")</p>
+                                            <p><strong>Ngày gửi:</strong> @contact.CreatedAt.ToString("dd/MM/yyyy HH:mm")</p>
+                                            <hr>
+                                            <p>@contact.Message</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>@contact.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>
+                            @if (!contact.IsRead)
+                            {
+                                <span class="badge badge-warning">Chưa đọc</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-success">Đã đọc</span>
+                            }
+                        </td>
+                        <td>
+                            @if (!contact.IsRead)
+                            {
+                                <a asp-action="MarkContactRead" asp-route-id="@contact.ContactId" class="btn btn-sm btn-success">Đánh dấu đã đọc</a>
+                            }
+                            <a asp-action="DeleteContact" asp-route-id="@contact.ContactId" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</a>
+                        </td>
+                    </tr>
+                    index++;
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

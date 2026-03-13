@@ -4,97 +4,323 @@
     Layout = "_AdminLayout";
 }
 
-<div class="container-fluid">
-    <h1 class="mb-4">Dashboard</h1>
-    
-    <div class="row">
-        <div class="col-md-3">
-            <div class="card text-white bg-primary mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Điểm du lịch</h5>
-                    <h2>@Model.TotalSpots</h2>
-                </div>
+<!-- F161-F164: 4 Small Boxes - Thống kê tổng quan -->
+<div class="row">
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-info">
+            <div class="inner">
+                <h3>@Model.TotalDestinations</h3>
+                <p>Điểm du lịch (F161)</p>
             </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card text-white bg-success mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Khách sạn</h5>
-                    <h2>@Model.TotalHotels</h2>
-                </div>
+            <div class="icon">
+                <i class="fas fa-map-marker-alt"></i>
             </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card text-white bg-info mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Tour du lịch</h5>
-                    <h2>@Model.TotalTours</h2>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card text-white bg-warning mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Đặt tour</h5>
-                    <h2>@Model.TotalBookings</h2>
-                </div>
-            </div>
+            <a asp-action="ManageSpots" class="small-box-footer">Xem chi tiết <i class="fas fa-arrow-circle-right"></i></a>
         </div>
     </div>
-
-    <div class="row mt-4">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header bg-danger text-white">
-                    <h5>Liên hệ chưa đọc</h5>
-                </div>
-                <div class="card-body">
-                    <h3>@Model.UnreadContacts</h3>
-                </div>
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-success">
+            <div class="inner">
+                <h3>@Model.TotalHotels</h3>
+                <p>Khách sạn (F162)</p>
             </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header bg-success text-white">
-                    <h5>Doanh thu</h5>
-                </div>
-                <div class="card-body">
-                    <h3>@String.Format("{0:N0} VNĐ", Model.TotalRevenue)</h3>
-                </div>
+            <div class="icon">
+                <i class="fas fa-hotel"></i>
             </div>
+            <a asp-action="ManageHotels" class="small-box-footer">Xem chi tiết <i class="fas fa-arrow-circle-right"></i></a>
         </div>
     </div>
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-warning">
+            <div class="inner">
+                <h3>@Model.TotalRestaurants</h3>
+                <p>Nhà hàng (F163)</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-utensils"></i>
+            </div>
+            <a href="#" class="small-box-footer">Xem chi tiết <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-danger">
+            <div class="inner">
+                <h3>@Model.TotalResorts</h3>
+                <p>Resort (F164)</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-swimming-pool"></i>
+            </div>
+            <a href="#" class="small-box-footer">Xem chi tiết <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+</div>
 
-    <div class="row mt-4">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5>Đơn đặt gần đây</h5>
+<!-- F165-F166: Thống kê đơn hàng và doanh thu -->
+<div class="row">
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-secondary">
+            <div class="inner">
+                <h3>@Model.TodayOrdersCount</h3>
+                <p>Đơn hàng hôm nay (F165)</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-calendar-day"></i>
+            </div>
+            <a asp-action="ManageBookings" class="small-box-footer">Xem chi tiết <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-primary">
+            <div class="inner">
+                <h3>@Model.MonthlyRevenue.ToString("N0") VNĐ</h3>
+                <p>Doanh thu tháng này (F166)</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-money-bill-wave"></i>
+            </div>
+            <span class="small-box-footer">&nbsp;</span>
+        </div>
+    </div>
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-dark">
+            <div class="inner">
+                <h3>@Model.TotalBookings</h3>
+                <p>Tổng đơn hàng (F170)</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-shopping-cart"></i>
+            </div>
+            <a asp-action="ManageBookings" class="small-box-footer">Xem chi tiết <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-teal">
+            <div class="inner">
+                <h3>@Model.TotalRevenue.ToString("N0") VNĐ</h3>
+                <p>Tổng doanh thu</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <span class="small-box-footer">&nbsp;</span>
+        </div>
+    </div>
+</div>
+
+<!-- F168: Biểu đồ doanh thu 12 tháng -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">Doanh thu 12 tháng gần đây (F168)</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
                 </div>
-                <div class="card-body">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Mã đơn</th>
-                                <th>Tour</th>
-                                <th>Ngày đặt</th>
-                                <th>Trạng thái</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var booking in Model.RecentBookings)
-                            {
-                                <tr>
-                                    <td>@booking.BookingId</td>
-                                    <td>@booking.Tour?.Name</td>
-                                    <td>@booking.BookingDate.ToString("dd/MM/yyyy")</td>
-                                    <td>@booking.Status</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+            </div>
+            <div class="card-body">
+                <div class="chart">
+                    <canvas id="revenueChart" style="min-height: 350px; height: 350px; max-height: 350px; max-width: 100%;"></canvas>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- F167 & F169: Bảng đơn hàng gần đây và Liên hệ chưa đọc -->
+<div class="row">
+    <!-- F167: Danh sách đơn hàng gần đây -->
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Đơn hàng gần đây (F167)</h3>
+                <div class="card-tools">
+                    <a asp-action="ManageBookings" class="btn btn-sm btn-primary">Xem tất cả</a>
+                </div>
+            </div>
+            <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                    <thead>
+                        <tr>
+                            <th>Mã đơn</th>
+                            <th>Khách hàng</th>
+                            <th>Tour</th>
+                            <th>Ngày đặt</th>
+                            <th>Tổng tiền</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var booking in Model.RecentBookings)
+                        {
+                            <tr>
+                                <td>#@booking.BookingId</td>
+                                <td>@booking.CustomerName</td>
+                                <td>@booking.Tour?.Name</td>
+                                <td>@booking.BookingDate.ToString("dd/MM/yyyy")</td>
+                                <td>@booking.TotalAmount.ToString("N0") VNĐ</td>
+                                <td>
+                                    @{
+                                        var badgeClass = booking.Status switch
+                                        {
+                                            "Pending" => "badge-warning",
+                                            "Confirmed" => "badge-info",
+                                            "Paid" or "Completed" => "badge-success",
+                                            "Cancelled" => "badge-danger",
+                                            _ => "badge-secondary"
+                                        };
+                                    }
+                                    <span class="badge @badgeClass">@booking.Status</span>
+                                </td>
+                                <td>
+                                    <a asp-action="ManageBookings" asp-route-id="@booking.BookingId" class="btn btn-sm btn-info">Chi tiết</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- F169: Liên hệ chưa đọc -->
+    <div class="col-md-4">
+        <div class="card card-warning">
+            <div class="card-header">
+                <h3 class="card-title">Liên hệ chưa đọc (F169)</h3>
+                <div class="card-tools">
+                    <a asp-action="ManageContacts" class="btn btn-sm btn-warning">Xem tất cả</a>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                @if (Model.UnreadContacts.Any())
+                {
+                    <ul class="products-list product-list-in-card">
+                        @foreach (var contact in Model.UnreadContacts)
+                        {
+                            <li class="item">
+                                <div class="product-info">
+                                    <a href="javascript:void(0)" class="product-title">
+                                        @contact.Name
+                                        <span class="badge badge-warning float-right">Mới</span>
+                                    </a>
+                                    <span class="product-description">
+                                        @(contact.Title ?? "Liên hệ mới") - @contact.CreatedAt.ToString("dd/MM/yyyy")
+                                    </span>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <div class="text-center p-3">
+                        <p class="text-muted">Không có liên hệ mới</p>
+                    </div>
+                }
+            </div>
+            <div class="card-footer text-center">
+                <a asp-action="ManageContacts" class="uppercase">Xem tất cả liên hệ</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- F170: SignalR Real-time Notifications -->
+<!-- TODO: Implement SignalR hub for real-time booking notifications -->
+<!-- 
+    1. Install Microsoft.AspNetCore.SignalR
+    2. Create BookingHub.cs:
+        public class BookingHub : Hub
+        {
+            public async Task SendNewBookingNotification(Booking booking)
+            {
+                await Clients.All.SendAsync("ReceiveNewBooking", booking);
+            }
+        }
+    3. Register in Program.cs: app.MapHub<BookingHub>("/bookingHub");
+    4. Add JavaScript client to receive notifications:
+        connection.on("ReceiveNewBooking", function(booking) {
+            // Show notification toast
+            toastr.success('Đơn hàng mới #' + booking.bookingId);
+        });
+-->
+
+@section Scripts {
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script>
+        // F168: Biểu đồ doanh thu 12 tháng
+        document.addEventListener('DOMContentLoaded', function() {
+            var revenueData = @Html.Raw(Json.Serialize(Model.MonthlyRevenues.Select(m => m.Revenue)));
+            var labels = @Html.Raw(Json.Serialize(Model.MonthlyRevenues.Select(m => m.Month)));
+
+            var ctx = document.getElementById('revenueChart').getContext('2d');
+            var revenueChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Doanh thu (VNĐ)',
+                        data: revenueData,
+                        backgroundColor: 'rgba(60, 141, 188, 0.8)',
+                        borderColor: 'rgba(60, 141, 188, 1)',
+                        borderWidth: 1,
+                        borderRadius: 5,
+                        fill: true,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.8)',
+                            'rgba(54, 162, 235, 0.8)',
+                            'rgba(255, 206, 86, 0.8)',
+                            'rgba(75, 192, 192, 0.8)',
+                            'rgba(153, 102, 255, 0.8)',
+                            'rgba(255, 159, 64, 0.8)',
+                            'rgba(199, 199, 199, 0.8)',
+                            'rgba(83, 102, 255, 0.8)',
+                            'rgba(255, 99, 132, 0.8)',
+                            'rgba(54, 162, 235, 0.8)',
+                            'rgba(255, 206, 86, 0.8)',
+                            'rgba(75, 192, 192, 0.8)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return new Intl.NumberFormat('vi-VN', { 
+                                        style: 'currency', 
+                                        currency: 'VND' 
+                                    }).format(context.raw);
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return new Intl.NumberFormat('vi-VN', { 
+                                        style: 'currency', 
+                                        currency: 'VND',
+                                        notation: 'compact'
+                                    }).format(value);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+}

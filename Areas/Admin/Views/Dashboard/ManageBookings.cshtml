@@ -1,0 +1,87 @@
+@model IEnumerable<KarnelTravels.Models.Booking>
+@{
+    ViewData["Title"] = "Quản lý đơn đặt";
+    Layout = "_AdminLayout";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Danh sách đơn đặt (F167)</h3>
+        <div class="card-tools">
+            <div class="input-group input-group-sm" style="width: 300px;">
+                <select class="form-control" onchange="location = this.value;">
+                    <option value="">Tất cả trạng thái</option>
+                    <option value="?status=Pending" selected="@ViewData["Status"]?.ToString() == "Pending">Pending</option>
+                    <option value="?status=Confirmed" selected="@ViewData["Status"]?.ToString() == "Confirmed">Confirmed</option>
+                    <option value="?status=Paid" selected="@ViewData["Status"]?.ToString() == "Paid">Paid</option>
+                    <option value="?status=Completed" selected="@ViewData["Status"]?.ToString() == "Completed">Completed</option>
+                    <option value="?status=Cancelled" selected="@ViewData["Status"]?.ToString() == "Cancelled">Cancelled</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="card-body table-responsive p-0">
+        <table class="table table-hover text-nowrap">
+            <thead>
+                <tr>
+                    <th>Mã đơn</th>
+                    <th>Khách hàng</th>
+                    <th>Tour</th>
+                    <th>Khách sạn</th>
+                    <th>Ngày đặt</th>
+                    <th>Ngày bắt đầu</th>
+                    <th>Số người</th>
+                    <th>Tổng tiền</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var booking in Model)
+                {
+                    <tr>
+                        <td>#@booking.BookingId</td>
+                        <td>
+                            <strong>@booking.CustomerName</strong><br>
+                            <small>@booking.CustomerEmail</small>
+                        </td>
+                        <td>@booking.Tour?.Name</td>
+                        <td>@booking.Hotel?.Name</td>
+                        <td>@booking.BookingDate.ToString("dd/MM/yyyy")</td>
+                        <td>@(booking.TravelDate?.ToString("dd/MM/yyyy") ?? "N/A")</td>
+                        <td>@booking.NumberOfPeople</td>
+                        <td>@booking.TotalAmount.ToString("N0") VNĐ</td>
+                        <td>
+                            @{
+                                var badgeClass = booking.Status switch
+                                {
+                                    "Pending" => "badge-warning",
+                                    "Confirmed" => "badge-info",
+                                    "Paid" => "badge-success",
+                                    "Completed" => "badge-primary",
+                                    "Cancelled" => "badge-danger",
+                                    _ => "badge-secondary"
+                                };
+                            }
+                            <span class="badge @badgeClass">@booking.Status</span>
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
+                                    Cập nhật
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" asp-action="UpdateBookingStatus" asp-route-id="@booking.BookingId" asp-route-status="Pending">Pending</a>
+                                    <a class="dropdown-item" asp-action="UpdateBookingStatus" asp-route-id="@booking.BookingId" asp-route-status="Confirmed">Confirmed</a>
+                                    <a class="dropdown-item" asp-action="UpdateBookingStatus" asp-route-id="@booking.BookingId" asp-route-status="Paid">Paid</a>
+                                    <a class="dropdown-item" asp-action="UpdateBookingStatus" asp-route-id="@booking.BookingId" asp-route-status="Completed">Completed</a>
+                                    <a class="dropdown-item" asp-action="UpdateBookingStatus" asp-route-id="@booking.BookingId" asp-route-status="Cancelled">Cancelled</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

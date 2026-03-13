@@ -1,0 +1,138 @@
+@model IEnumerable<KarnelTravels.Models.TouristSpot>
+@{
+    ViewData["Title"] = "Quản lý điểm du lịch";
+    Layout = "_AdminLayout";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Danh sách điểm du lịch (F161)</h3>
+        <div class="card-tools">
+            <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#addModal">
+                <i class="fas fa-plus"></i> Thêm mới
+            </button>
+        </div>
+    </div>
+    <div class="card-body table-responsive p-0">
+        <table class="table table-hover text-nowrap">
+            <thead>
+                <tr>
+                    <th>Mã</th>
+                    <th>Tên</th>
+                    <th>Loại</th>
+                    <th>Vùng</th>
+                    <th>Giá vé</th>
+                    <th>Đánh giá</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var spot in Model)
+                {
+                    <tr>
+                        <td>@spot.SpotId</td>
+                        <td>@spot.Name</td>
+                        <td>@spot.SpotType</td>
+                        <td>@spot.Region</td>
+                        <td>@(spot.TicketPrice?.ToString("N0") ?? "0") VNĐ</td>
+                        <td>
+                            @{
+                                var rating = spot.Rating.HasValue ? (int)Math.Round(spot.Rating.Value) : 0;
+                            }
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                if (i <= rating)
+                                {
+                                    <i class="fas fa-star text-warning"></i>
+                                }
+                                else
+                                {
+                                    <i class="far fa-star text-warning"></i>
+                                }
+                            }
+                        </td>
+                        <td>
+                            @if (spot.IsActive)
+                            {
+                                <span class="badge badge-success">Hoạt động</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-secondary">Không hoạt động</span>
+                            }
+                        </td>
+                        <td>
+                            <a asp-action="EditSpot" asp-route-id="@spot.SpotId" class="btn btn-sm btn-info">Sửa</a>
+                            <a asp-action="DeleteSpot" asp-route-id="@spot.SpotId" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc chắn?')">Xóa</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Add Modal -->
+<div class="modal fade" id="addModal">
+    <div class="modal-dialog modal-lg">
+        <form asp-action="AddSpot" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Thêm điểm du lịch mới</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Tên điểm du lịch</label>
+                        <input type="text" name="Name" class="form-control" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Loại</label>
+                                <input type="text" name="SpotType" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Vùng</label>
+                                <input type="text" name="Region" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Giá vé</label>
+                                <input type="number" name="TicketPrice" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Đánh giá</label>
+                                <input type="number" name="Rating" step="0.1" max="5" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Mô tả</label>
+                        <textarea name="Description" class="form-control" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Địa chỉ</label>
+                        <input type="text" name="Address" class="form-control">
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" name="IsActive" class="form-check-input" value="true" checked>
+                        <label class="form-check-label">Hoạt động</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

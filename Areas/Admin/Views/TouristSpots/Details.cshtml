@@ -1,0 +1,138 @@
+@model KarnelTravels.Models.TouristSpot
+@{
+    ViewData["Title"] = "Chi tiết điểm du lịch";
+    Layout = "_AdminLayout";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">
+            <i class="fas fa-info-circle"></i> Chi tiết điểm du lịch
+        </h3>
+        <div class="card-tools">
+            <a asp-action="Edit" asp-route-id="@Model.SpotId" class="btn btn-warning btn-sm">
+                <i class="fas fa-edit"></i> Sửa
+            </a>
+            <a asp-action="Index" class="btn btn-secondary btn-sm">
+                <i class="fas fa-arrow-left"></i> Quay lại
+            </a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <img src="@Model.ImageUrl" alt="@Model.Name" class="img-fluid img-thumbnail">
+                }
+                else
+                {
+                    <img src="https://via.placeholder.com/400x300?text=No+Image" alt="No Image" class="img-fluid img-thumbnail">
+                }
+            </div>
+            <div class="col-md-8">
+                <table class="table table-striped">
+                    <tr>
+                        <th style="width: 200px;">ID:</th>
+                        <td>@Model.SpotId</td>
+                    </tr>
+                    <tr>
+                        <th>Tên điểm du lịch:</th>
+                        <td>
+                            <strong>@Model.Name</strong>
+                            @if (Model.IsPopular)
+                            {
+                                <span class="badge badge-danger ml-2">Nổi bật</span>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Danh mục:</th>
+                        <td>@Model.Category?.Name</td>
+                    </tr>
+                    <tr>
+                        <th>Địa chỉ:</th>
+                        <td>@Model.Address</td>
+                    </tr>
+                    <tr>
+                        <th>Vùng/Miền:</th>
+                        <td>@Model.Region</td>
+                    </tr>
+                    <tr>
+                        <th>Loại hình:</th>
+                        <td>@Model.SpotType</td>
+                    </tr>
+                    <tr>
+                        <th>Giá vé:</th>
+                        <td>@(Model.TicketPrice?.ToString("N0") ?? "0") VNĐ</td>
+                    </tr>
+                    <tr>
+                        <th>Khoảng giá:</th>
+                        <td>@Model.PriceRange.ToString("N0") VNĐ</td>
+                    </tr>
+                    <tr>
+                        <th>Đánh giá:</th>
+                        <td>
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                if (i <= (Model.Rating ?? 0))
+                                {
+                                    <i class="fas fa-star text-warning"></i>
+                                }
+                                else
+                                {
+                                    <i class="far fa-star text-warning"></i>
+                                }
+                            }
+                            <span class="ml-2">@Model.Rating?.ToString("F1")/5</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Thời điểm tốt nhất:</th>
+                        <td>@Model.BestTime</td>
+                    </tr>
+                    <tr>
+                        <th>Trạng thái:</th>
+                        <td>
+                            @if (Model.IsActive)
+                            {
+                                <span class="badge badge-success">Hoạt động</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-secondary">Không hoạt động</span>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Ngày tạo:</th>
+                        <td>@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <h5>Mô tả chi tiết</h5>
+                <hr>
+                <div class="border p-3">
+                    @Html.Raw(Model.Description)
+                </div>
+            </div>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.Activities))
+        {
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <h5>Hoạt động</h5>
+                    <hr>
+                    <div class="border p-3">
+                        @Model.Activities
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

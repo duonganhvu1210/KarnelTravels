@@ -1,0 +1,233 @@
+@using KarnelTravels.Areas.Admin.Controllers
+@model PaginatedList<KarnelTravels.Models.TouristSpot>
+@{
+    ViewData["Title"] = "Quản lý điểm du lịch";
+    Layout = "_AdminLayout";
+}
+
+<!-- F161: Thống kê tổng số điểm du lịch -->
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="alert alert-info d-flex align-items-center">
+            <i class="fas fa-map-marker-alt fa-2x mr-3"></i>
+            <div>
+                <h5 class="mb-0">Tổng số điểm du lịch: <strong>@ViewData["TotalSpots"]</strong></h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">
+            <i class="fas fa-list"></i> Danh sách điểm du lịch
+        </h3>
+        <div class="card-tools">
+            <a asp-action="Create" class="btn btn-primary btn-sm">
+                <i class="fas fa-plus"></i> Thêm mới
+            </a>
+        </div>
+    </div>
+    <div class="card-body">
+        <!-- Tìm kiếm -->
+        <form asp-action="Index" method="get" class="mb-3">
+            <div class="input-group">
+                <input type="text" name="searchString" class="form-control" 
+                       placeholder="Tìm kiếm theo tên..." 
+                       value="@ViewData["CurrentSearch"]">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-search"></i> Tìm kiếm
+                    </button>
+                    @if (!string.IsNullOrEmpty(ViewData["CurrentSearch"]?.ToString()))
+                    {
+                        <a asp-action="Index" class="btn btn-secondary">Xóa</a>
+                    }
+                </div>
+            </div>
+        </form>
+
+        <!-- Bảng dữ liệu với DataTables -->
+        <table id="touristSpotsTable" class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Hình ảnh</th>
+                    <th>Tên</th>
+                    <th>Danh mục</th>
+                    <th>Địa chỉ</th>
+                    <th>Giá vé</th>
+                    <th>Nổi bật</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var spot in Model)
+                {
+                    <tr>
+                        <td>@spot.SpotId</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(spot.ImageUrl))
+                            {
+                                <img src="@spot.ImageUrl" alt="@spot.Name" style="width: 60px; height: 40px; object-fit: cover;" class="img-thumbnail">
+                            }
+                            else
+                            {
+                                <img src="https://via.placeholder.com/60x40?text=No+Image" alt="No Image" class="img-thumbnail">
+                            }
+                        </td>
+                        <td>
+                            <strong>@spot.Name</strong>
+                            @if (spot.IsPopular)
+                            {
+                                <span class="badge badge-danger">Hot</span>
+                            }
+                        </td>
+                        <td>@spot.Category?.Name</td>
+                        <td>@spot.Address</td>
+                        <td>@(spot.TicketPrice?.ToString("N0") ?? "0") VNĐ</td>
+                        <td>
+                            @if (spot.IsPopular)
+                            {
+                                <span class="badge badge-danger">Nổi bật</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-secondary">Bình thường</span>
+                            }
+                        </td>
+                        <td>
+                            @if (spot.IsActive)
+                            {
+                                <span class="badge badge-success">Hoạt động</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-secondary">Không hoạt động</span>
+                            }
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <a asp-action="Details" asp-route-id="@spot.SpotId" class="btn btn-sm btn-info" title="Chi tiết">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a asp-action="Edit" asp-route-id="@spot.SpotId" class="btn btn-sm btn-warning" title="Sửa">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button type="button" class="btn btn-sm btn-danger" title="Xóa"
+                                        onclick="confirmDelete('@spot.SpotId', '@spot.Name')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <!-- Phân trang -->
+        @{
+            var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+            var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+        }
+        <div class="mt-3">
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item @prevDisabled">
+                        <a class="page-link" asp-action="Index" 
+                           asp-route-pageNumber="@(Model.PageIndex - 1)"
+                           asp-route-searchString="@ViewData["CurrentSearch"]">Trước</a>
+                    </li>
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                            <a class="page-link" asp-action="Index" 
+                               asp-route-pageNumber="@i"
+                               asp-route-searchString="@ViewData["CurrentSearch"]">@i</a>
+                        </li>
+                    }
+                    <li class="page-item @nextDisabled">
+                        <a class="page-link" asp-action="Index" 
+                           asp-route-pageNumber="@(Model.PageIndex + 1)"
+                           asp-route-searchString="@ViewData["CurrentSearch"]">Sau</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="text-center text-muted">
+                Trang @Model.PageIndex / @Model.TotalPages | Tổng @Model.TotalCount bản ghi
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SweetAlert2 Delete Confirmation -->
+<div class="modal fade" id="deleteModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <h4 class="modal-title">Xác nhận xóa</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Bạn có chắc chắn muốn xóa điểm du lịch <strong id="deleteItemName"></strong>?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                <form id="deleteForm" asp-action="Delete" method="post">
+                    <input type="hidden" name="id" id="deleteItemId" />
+                    <button type="submit" class="btn btn-danger">Xóa</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css">
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
+    
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Initialize DataTable
+            $('#touristSpotsTable').DataTable({
+                "paging": false,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": false,
+                "autoWidth": false,
+                "responsive": true,
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/Vietnamese.json"
+                }
+            });
+
+            // Show success message
+            @if (TempData["Success"] != null)
+            {
+                <text>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công',
+                    text: '@TempData["Success"]',
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+                </text>
+            }
+        });
+
+        // Delete confirmation with SweetAlert2
+        function confirmDelete(id, name) {
+            $('#deleteItemId').val(id);
+            $('#deleteItemName').text(name);
+            $('#deleteModal').modal('show');
+        }
+    </script>
+}

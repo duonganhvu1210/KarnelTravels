@@ -66,16 +66,16 @@
             <li class="nav-item dropdown">
                 <a class="nav-link" data-toggle="dropdown" href="#">
                     <i class="far fa-bell"></i>
-                    <span class="badge badge-warning navbar-badge">@Model?.UnreadContacts?.Count</span>
+                    <span class="badge badge-warning navbar-badge" id="notificationCount">0</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                    <span class="dropdown-item dropdown-header">@Model?.UnreadContacts?.Count Notifications</span>
+                    <span class="dropdown-item dropdown-header"><span id="notificationCountText">0</span> Notifications</span>
                     <div class="dropdown-divider"></div>
-                    <a asp-action="ManageContacts" class="dropdown-item">
-                        <i class="fas fa-envelope mr-2"></i> @Model?.UnreadContacts?.Count new messages
+                    <a asp-area="Admin" asp-controller="Dashboard" asp-action="ManageContacts" class="dropdown-item">
+                        <i class="fas fa-envelope mr-2"></i> <span id="notificationCountText2">0</span> new messages
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a asp-action="ManageContacts" class="dropdown-item dropdown-footer">View All Notifications</a>
+                    <a asp-area="Admin" asp-controller="Dashboard" asp-action="ManageContacts" class="dropdown-item dropdown-footer">View All Notifications</a>
                 </div>
             </li>
             <li class="nav-item">

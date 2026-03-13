@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KarnelTravels.Models
 {
@@ -36,9 +37,20 @@ namespace KarnelTravels.Models
 
         public decimal? TicketPrice { get; set; }
 
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal PriceRange { get; set; }
+
+        public bool IsPopular { get; set; }
+
         public bool IsActive { get; set; } = true;
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+        // Foreign Key
+        public int? CategoryId { get; set; }
+
+        [ForeignKey("CategoryId")]
+        public TouristSpotCategory? Category { get; set; }
 
         public ICollection<TourSpot> TourSpots { get; set; } = new List<TourSpot>();
     }

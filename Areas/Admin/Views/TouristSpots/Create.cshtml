@@ -1,0 +1,181 @@
+@model KarnelTravels.Models.TouristSpot
+@{
+    ViewData["Title"] = "Thêm điểm du lịch";
+    Layout = "_AdminLayout";
+}
+
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title">Thêm điểm du lịch mới</h3>
+    </div>
+    <form asp-action="Create" method="post" enctype="multipart/form-data">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Name">Tên điểm du lịch *</label>
+                        <input asp-for="Name" class="form-control" placeholder="Nhập tên điểm du lịch" required>
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="CategoryId">Danh mục</label>
+                        <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Categories">
+                            <option value="">-- Chọn danh mục --</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Address">Địa chỉ</label>
+                        <input asp-for="Address" class="form-control" placeholder="Nhập địa chỉ">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Region">Vùng/Miền</label>
+                        <select asp-for="Region" class="form-control">
+                            <option value="">-- Chọn vùng --</option>
+                            <option value="Miền Bắc">Miền Bắc</option>
+                            <option value="Miền Trung">Miền Trung</option>
+                            <option value="Miền Nam">Miền Nam</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="SpotType">Loại hình</label>
+                        <select asp-for="SpotType" class="form-control">
+                            <option value="">-- Chọn loại hình --</option>
+                            <option value="Biển">Biển</option>
+                            <option value="Núi">Núi</option>
+                            <option value="Thành phố">Thành phố</option>
+                            <option value="Lịch sử">Lịch sử</option>
+                            <option value="Văn hóa">Văn hóa</option>
+                            <option value="Sinh thái">Sinh thái</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="TicketPrice">Giá vé (VNĐ)</label>
+                        <input asp-for="TicketPrice" class="form-control" type="number" placeholder="Nhập giá vé">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="PriceRange">Khoảng giá tham khảo (VNĐ)</label>
+                        <input asp-for="PriceRange" class="form-control" type="number" placeholder="Nhập khoảng giá">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Rating">Đánh giá (1-5)</label>
+                        <input asp-for="Rating" class="form-control" type="number" step="0.1" min="0" max="5" placeholder="Nhập đánh giá">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Description">Mô tả chi tiết</label>
+                <textarea asp-for="Description" class="form-control summernote" rows="5" placeholder="Nhập mô tả chi tiết"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Activities">Hoạt động</label>
+                <textarea asp-for="Activities" class="form-control" rows="3" placeholder="Mô tả các hoạt động có thể tham gia"></textarea>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="BestTime">Thời điểm tốt nhất</label>
+                        <input asp-for="BestTime" class="form-control" placeholder="VD: Tháng 4 - Tháng 6">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Hình ảnh đại diện</label>
+                        <div class="input-group">
+                            <div class="custom-file">
+                                <input type="file" name="imageFile" class="custom-file-input" id="imageInput" accept="image/*">
+                                <label class="custom-file-label" for="imageInput">Chọn hình ảnh</label>
+                            </div>
+                        </div>
+                        <small class="form-text text-muted">Chấp nhận: .jpg, .jpeg, .png, .gif</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input asp-for="IsPopular" class="custom-control-input" type="checkbox">
+                            <label asp-for="IsPopular" class="custom-control-label">Đánh dấu là điểm đến nổi bật</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input asp-for="IsActive" class="custom-control-input" type="checkbox" checked>
+                            <label asp-for="IsActive" class="custom-control-label">Hoạt động</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Lưu
+            </button>
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Quay lại
+            </a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <!-- Summernote -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/summernote-bs4.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/summernote-bs4.min.js"></script>
+    
+    <!-- jQuery Validation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Initialize Summernote
+            $('.summernote').summernote({
+                height: 200,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'italic', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['insert', ['link', 'picture']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ]
+            });
+
+            // Update file input label
+            $('#imageInput').on('change', function() {
+                var fileName = $(this).val().split('\\').pop();
+                $(this).next('.custom-file-label').text(fileName);
+            });
+        });
+    </script>
+}

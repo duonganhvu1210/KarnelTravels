@@ -1,0 +1,104 @@
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    var stats = ViewData["Stats"];
+}
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<section class="py-4">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2 bg-dark text-white p-4 min-vh-100">
+                <h4 class="mb-4">Admin Panel</h4>
+                <ul class="nav flex-column">
+                    <li class="nav-item mb-2"><a class="nav-link text-white" asp-action="Dashboard">Dashboard</a></li>
+                    <li class="nav-item mb-2"><a class="nav-link text-white" asp-action="ManageSpots">Điểm du lịch</a></li>
+                    <li class="nav-item mb-2"><a class="nav-link text-white" asp-action="ManageHotels">Khách sạn</a></li>
+                    <li class="nav-item mb-2"><a class="nav-link text-white" asp-action="ManageTours">Tour</a></li>
+                    <li class="nav-item mb-2"><a class="nav-link text-white" asp-action="ManageBookings">Đơn đặt</a></li>
+                    <li class="nav-item mb-2"><a class="nav-link text-white" asp-action="ManagePromotions">Khuyến mãi</a></li>
+                    <li class="nav-item mb-2"><a class="nav-link text-white" asp-action="ManageContacts">Liên hệ</a></li>
+                    <li class="nav-item mb-2"><a class="nav-link text-white" asp-action="Logout">Đăng xuất</a></li>
+                </ul>
+            </div>
+            <div class="col-md-10 p-4">
+                <h2 class="mb-4">Dashboard</h2>
+                
+                <div class="row g-4 mb-4">
+                    <div class="col-md-3">
+                        <div class="card bg-primary text-white">
+                            <div class="card-body">
+                                <h5>Điểm du lịch</h5>
+                                <h3>@ViewBag.TotalSpots</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-success text-white">
+                            <div class="card-body">
+                                <h5>Khách sạn</h5>
+                                <h3>@ViewBag.TotalHotels</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-info text-white">
+                            <div class="card-body">
+                                <h5>Tour</h5>
+                                <h3>@ViewBag.TotalTours</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-warning text-white">
+                            <div class="card-body">
+                                <h5>Đơn đặt</h5>
+                                <h3>@ViewBag.TotalBookings</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Đơn đặt gần đây</h5>
+                            </div>
+                            <div class="card-body">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Khách hàng</th>
+                                            <th>Dịch vụ</th>
+                                            <th>Ngày đặt</th>
+                                            <th>Trạng thái</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if(ViewBag.RecentBookings != null)
+                                        {
+                                            foreach(var booking in ViewBag.RecentBookings)
+                                            {
+                                                <tr>
+                                                    <td>@booking.BookingId</td>
+                                                    <td>@booking.CustomerName</td>
+                                                    <td>@(booking.Tour?.Name ?? "N/A")</td>
+                                                    <td>@booking.BookingDate.ToString("dd/MM/yyyy")</td>
+                                                    <td>@booking.Status</td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

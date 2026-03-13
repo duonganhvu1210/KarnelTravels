@@ -1,0 +1,35 @@
+@{
+    ViewData["Title"] = "Đăng nhập";
+}
+
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="card border-0 shadow">
+                    <div class="card-body p-5">
+                        <h2 class="text-center mb-4">Đăng nhập</h2>
+                        @if(ViewData["Error"] != null)
+                        {
+                            <div class="alert alert-danger">@ViewData["Error"]</div>
+                        }
+                        <form method="post">
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" name="email" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Mật khẩu</label>
+                                <input type="password" name="password" class="form-control" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
+                        </form>
+                        <p class="text-center mt-3">
+                            Chưa có tài khoản? <a asp-controller="Account" asp-action="Register">Đăng ký ngay</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

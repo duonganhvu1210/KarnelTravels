@@ -1,0 +1,198 @@
+@{
+    ViewData["Title"] = "Trang chủ";
+    var featuredTours = ViewData["FeaturedTours"] as IEnumerable<KarnelTravels.Models.Tour>;
+    var popularSpots = ViewData["PopularSpots"] as IEnumerable<KarnelTravels.Models.TouristSpot>;
+    var hotels = ViewData["Hotels"] as IEnumerable<KarnelTravels.Models.Hotel>;
+    var promotions = ViewData["Promotions"] as IEnumerable<KarnelTravels.Models.Promotion>;
+}
+
+<!-- Hero Section with Banner -->
+<section class="hero-section" style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920'); background-size: cover; background-position: center; height: 500px; display: flex; align-items: center; justify-content: center;">
+    <div class="container text-center text-white">
+        <h1 class="display-3 fw-bold mb-4">Khám Phá Việt Nam Cùng Karnel Travels</h1>
+        <p class="lead mb-4">Trải nghiệm những chuyến đi tuyệt vời nhất với dịch vụ chất lượng cao</p>
+        
+        <!-- Search Box -->
+        <div class="search-box bg-white p-4 rounded shadow" style="max-width: 700px; margin: 0 auto;">
+            <form asp-controller="Search" asp-action="Index" method="get">
+                <div class="row g-3">
+                    <div class="col-md-8">
+                        <input type="text" name="query" class="form-control form-control-lg" placeholder="Tìm kiếm điểm đến, tour, khách sạn...">
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary btn-lg w-100">
+                            <i class="fas fa-search"></i> Tìm kiếm
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Dịch vụ của chúng tôi</h2>
+        <div class="row g-4">
+            <div class="col-md-3 col-6">
+                <div class="text-center p-4 bg-white rounded shadow-sm">
+                    <i class="fas fa-plane-departure fa-3x text-primary mb-3"></i>
+                    <h5>Vận chuyển</h5>
+                    <a asp-controller="Transport" asp-action="Index" class="btn btn-sm btn-outline-primary">Xem thêm</a>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="text-center p-4 bg-white rounded shadow-sm">
+                    <i class="fas fa-hotel fa-3x text-primary mb-3"></i>
+                    <h5>Khách sạn</h5>
+                    <a asp-controller="Hotel" asp-action="Index" class="btn btn-sm btn-outline-primary">Xem thêm</a>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="text-center p-4 bg-white rounded shadow-sm">
+                    <i class="fas fa-map fa-3x text-primary mb-3"></i>
+                    <h5>Tour du lịch</h5>
+                    <a asp-controller="Tour" asp-action="Index" class="btn btn-sm btn-outline-primary">Xem thêm</a>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="text-center p-4 bg-white rounded shadow-sm">
+                    <i class="fas fa-umbrella-beach fa-3x text-primary mb-3"></i>
+                    <h5>Resort</h5>
+                    <a asp-controller="Resort" asp-action="Index" class="btn btn-sm btn-outline-primary">Xem thêm</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Popular Destinations -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Điểm du lịch nổi bật</h2>
+        <div class="row g-4">
+            @if(popularSpots != null)
+            {
+                @foreach(var spot in popularSpots)
+                {
+                    <div class="col-md-4 col-lg-2">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-img-top bg-secondary" style="height: 150px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-image fa-3x text-white"></i>
+                            </div>
+                            <div class="card-body text-center">
+                                <h6 class="card-title">@spot.Name</h6>
+                                <p class="text-muted small">@spot.Region</p>
+                                <a asp-controller="TouristSpot" asp-action="Details" asp-route-id="@spot.SpotId" class="btn btn-sm btn-primary">Chi tiết</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Featured Tours -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Tour du lịch nổi bật</h2>
+        <div class="row g-4">
+            @if(featuredTours != null)
+            {
+                @foreach(var tour in featuredTours)
+                {
+                    <div class="col-md-4">
+                        <div class="card shadow-sm h-100 border-0">
+                            <div class="card-img-top bg-secondary" style="height: 200px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-map-marked-alt fa-3x text-white"></i>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">@tour.Name</h5>
+                                <p class="text-muted">@tour.DurationDays ngày @((tour.DurationDays - 1)) đêm</p>
+                                <p class="card-text text-truncate">@tour.Description</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-primary fw-bold">@tour.Price.ToString("N0") VNĐ</span>
+                                    <a asp-controller="Tour" asp-action="Details" asp-route-id="@tour.TourId" class="btn btn-sm btn-primary">Đặt ngay</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Hotels -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Khách sạn được yêu thích</h2>
+        <div class="row g-4">
+            @if(hotels != null)
+            {
+                @foreach(var hotel in hotels)
+                {
+                    <div class="col-md-4">
+                        <div class="card shadow-sm h-100 border-0">
+                            <div class="card-img-top bg-secondary" style="height: 180px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-hotel fa-3x text-white"></i>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">@hotel.Name</h5>
+                                <p class="text-muted">
+                                    @for(int i = 0; i < hotel.StarRating; i++)
+                                    {
+                                        <i class="fas fa-star text-warning"></i>
+                                    }
+                                </p>
+                                <p class="card-text text-truncate">@hotel.Description</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-primary fw-bold">@hotel.MinPrice?.ToString("N0") - @hotel.MaxPrice?.ToString("N0") VNĐ</span>
+                                    <a asp-controller="Hotel" asp-action="Details" asp-route-id="@hotel.HotelId" class="btn btn-sm btn-primary">Xem</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Promotions -->
+@if(promotions != null && promotions.Any())
+{
+    <section class="py-5 bg-primary text-white">
+        <div class="container">
+            <h2 class="text-center mb-5">Khuyến mãi hấp dẫn</h2>
+            <div class="row g-4">
+                @foreach(var promo in promotions)
+                {
+                    <div class="col-md-6">
+                        <div class="card bg-transparent border-white">
+                            <div class="card-body text-center">
+                                <h3 class="text-warning">@promo.DiscountPercent% GIẢM GIÁ</h3>
+                                <h4>@promo.Name</h4>
+                                <p>@promo.Description</p>
+                                <p class="small">Hết hạn: @promo.EndDate.ToString("dd/MM/yyyy")</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+}
+
+<!-- CTA Section -->
+<section class="py-5">
+    <div class="container text-center">
+        <h2 class="mb-4">Sẵn sàng cho chuyến đi của bạn?</h2>
+        <p class="lead mb-4">Liên hệ ngay với chúng tôi để được tư vấn miễn phí</p>
+        <a asp-controller="Home" asp-action="Contact" class="btn btn-primary btn-lg">
+            <i class="fas fa-phone"></i> Liên hệ ngay
+        </a>
+    </div>
+</section>

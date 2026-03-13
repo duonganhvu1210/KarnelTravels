@@ -1,0 +1,31 @@
+@model IEnumerable<KarnelTravels.Models.Transport>
+@{
+    ViewData["Title"] = "Phương tiện";
+}
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <h1 class="text-center mb-4">Phương tiện vận chuyển</h1>
+        <div class="row g-4">
+            @foreach(var transport in Model)
+            {
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-img-top bg-secondary" style="height: 150px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-bus fa-3x text-white"></i>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@transport.Name</h5>
+                            <p class="text-muted"><i class="fas fa-route"></i> @transport.FromLocation - @transport.ToLocation</p>
+                            <p class="text-muted">@transport.TransportType - @transport.Company</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-primary fw-bold">@transport.Price?.ToString("N0") VNĐ</span>
+                                <a asp-controller="Transport" asp-action="Details" asp-route-id="@transport.TransportId" class="btn btn-primary">Xem</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>

@@ -1,0 +1,31 @@
+@model IEnumerable<KarnelTravels.Models.Resort>
+@{
+    ViewData["Title"] = "Resort";
+}
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <h1 class="text-center mb-4">Resort</h1>
+        <div class="row g-4">
+            @foreach(var resort in Model)
+            {
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-img-top bg-secondary" style="height: 200px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-umbrella-beach fa-3x text-white"></i>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@resort.Name</h5>
+                            <p class="text-muted">@resort.ResortType - @resort.StarRating sao</p>
+                            <p class="text-muted"><i class="fas fa-map-marker-alt"></i> @resort.City</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-primary fw-bold">@resort.MinPrice?.ToString("N0") - @resort.MaxPrice?.ToString("N0") VNĐ</span>
+                                <a asp-controller="Resort" asp-action="Details" asp-route-id="@resort.ResortId" class="btn btn-primary">Xem</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>

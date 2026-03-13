@@ -1,0 +1,63 @@
+@model IEnumerable<KarnelTravels.Models.TouristSpot>
+@{
+    ViewData["Title"] = "Điểm du lịch";
+}
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <h1 class="text-center mb-4">Điểm du lịch</h1>
+        
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <form method="get" class="row g-3">
+                            <div class="col-md-4">
+                                <select name="region" class="form-select">
+                                    <option value="">Tất cả vùng miền</option>
+                                    <option value="Miền Bắc">Miền Bắc</option>
+                                    <option value="Miền Trung">Miền Trung</option>
+                                    <option value="Miền Nam">Miền Nam</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <select name="type" class="form-select">
+                                    <option value="">Tất cả loại hình</option>
+                                    <option value="Biển">Biển</option>
+                                    <option value="Núi">Núi</option>
+                                    <option value="Di tích">Di tích</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-primary w-100">Lọc</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            @foreach(var spot in Model)
+            {
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-img-top bg-secondary" style="height: 200px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-image fa-3x text-white"></i>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@spot.Name</h5>
+                            <p class="text-muted">@spot.Region - @spot.SpotType</p>
+                            <p class="card-text">@spot.Description</p>
+                            @if(spot.Rating.HasValue)
+                            {
+                                <p><i class="fas fa-star text-warning"></i> @spot.Rating</p>
+                            }
+                            <a asp-controller="TouristSpot" asp-action="Details" asp-route-id="@spot.SpotId" class="btn btn-primary">Chi tiết</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
